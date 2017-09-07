@@ -7,13 +7,15 @@ import store from './store';
 
 import indexComponent from './component';
 import Photo from './component/photo';
+import Slate from './component/slate';
 
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path='/' component={indexComponent}>
-        <IndexRedirect to="/photo" />
+        <IndexRedirect to="/slate" />
         <Route path="/photo" component={Photo} />
+        <Route path="/slate" component={Slate} />
       </Route>
     </Router>
   </Provider>
