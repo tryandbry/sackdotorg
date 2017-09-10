@@ -48465,19 +48465,39 @@ var _class = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _class.__proto__ || Object.getPrototypeOf(_class)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      state: initialState
+      state: initialState,
+      schema: {
+        nodes: {
+          code: function code(props) {
+            return _react2.default.createElement(
+              'pre',
+              props.attributes,
+              _react2.default.createElement(
+                'code',
+                null,
+                props.children
+              )
+            );
+          }
+        }
+      }
     }, _this.onChange = function (_ref2) {
       var state = _ref2.state;
 
       _this.setState({ state: state });
     }, _this.onKeyDown = function (event, data, change) {
+      console.log(event.which + 'metaKey:' + event.metaKey + ' altKey:' + event.altKey);
 
-      if (event.which != 55 || !event.shiftKey) {
+      if (event.which != 67 || !event.altKey) {
         return;
       }
 
       event.preventDefault();
-      change.insertText('and');
+      var isCode = change.state.blocks.some(function (block) {
+        return block.type == 'code';
+      });
+
+      change.setBlock(isCode ? 'paragraph' : 'code');
       return true;
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -48491,6 +48511,7 @@ var _class = function (_React$Component) {
         null,
         _react2.default.createElement(_slate.Editor, {
           state: this.state.state,
+          schema: this.state.schema,
           onChange: this.onChange,
           onKeyDown: this.onKeyDown
         })
