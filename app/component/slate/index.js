@@ -42,6 +42,17 @@ export default class extends React.Component {
     this.setState({state});
   }
 
+  onKeyDown = (event,data,change) => {
+
+    if(event.which != 55 || !event.shiftKey) {
+      return;
+    }
+
+    event.preventDefault();
+    change.insertText('and');
+    return true;
+  }
+
   render() {
 
     return (
@@ -49,6 +60,7 @@ export default class extends React.Component {
         <Editor 
           state={this.state.state}
           onChange={this.onChange}
+          onKeyDown={this.onKeyDown}
         />
       </div>
     );
