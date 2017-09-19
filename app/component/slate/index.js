@@ -1,5 +1,8 @@
 import React from 'react';
-import {Editor, Raw} from 'slate';
+import {Editor, Raw, Plain} from 'slate';
+import firebase from '../../firebase';
+
+const database = firebase.database();
 
 /*
 const initialState = Raw.deserialize({
@@ -46,6 +49,12 @@ export default class extends React.Component {
 
   onChange = ({state}) => {
     this.setState({state});
+
+    if(state.document != this.state.state.document) {
+      //need JSON stringify to compenstate for undefined properties in Slate state
+      //otherwise, firebase will throw an error
+      database.ref('test').set(JSON.stringify(state.toJSON()));
+    }
   }
 
   onKeyDown = (event,data,change) => {
