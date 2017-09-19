@@ -20,3 +20,6 @@ render(
   ,
   document.getElementById('main')
 );
+
+
+import firebase from './firebase';
