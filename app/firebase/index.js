@@ -1,7 +1,8 @@
 import {resolve} from 'path';
-//import config from `${process.env.proot}../.sackdotorg.secrets`;
-import config from '../../../.sackdotorg.secrets';
 import firebase from 'firebase';
+
+/* import firebase keys */
+import config from '../../../.sackdotorg.secrets';
 
 firebase.__firebaseInit || (firebase.__firebaseInit = firebase.initializeApp(config));
 
