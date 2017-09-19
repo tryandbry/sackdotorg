@@ -2,12 +2,6 @@ var express = require('express');
 var app = express();
 var {resolve} = require('path');
 
-// set helper pointers
-process.env.proot = resolve(__dirname,'..');
-//console.log("proot:",process.env.proot);
-//console.log("resolve",resolve(process.env.proot,'../.sackdotorg.secrets'));
-//
-
 const PORT = process.env.PORT || 5000;
 
 app.use(express.static(resolve(__dirname,'../pub')));
