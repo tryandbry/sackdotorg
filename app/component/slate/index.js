@@ -1,6 +1,7 @@
 import React from 'react';
 import {Editor, Raw, Plain} from 'slate';
 import firebase from '../../firebase';
+import keycode from 'keycode';
 
 const database = firebase.database();
 
@@ -19,15 +20,13 @@ const initialState = Raw.deserialize({
   ],
 }, {terse: true});
 
-function MarkHotkey({type, code, isAltKey = false, isCtrlKey = false}){
-  console.log('MarkHotkey:',type, code, isCtrlKey, isAltKey);
+function MarkHotkey({type, key, isAltKey = false, isCtrlKey = false}){
   return {
     onKeyDown(event,data,change) {
-      if(!event.ctrlKey || event.which != code || event.altKey != isAltKey) {
-        console.log('no match');
-        return;
-      }
-      console.log('match');
+      if(             !event.ctrlKey || 
+         keycode(event.which) != key ||
+            event.altKey != isAltKey
+        ) return;
 
       event.preventDefault();
 
@@ -38,11 +37,11 @@ function MarkHotkey({type, code, isAltKey = false, isCtrlKey = false}){
 }
 
 const plugins = [
-  MarkHotkey({code: 66, type: 'bold'}),
-  MarkHotkey({code: 67, type: 'code', isAltKey: true}),
-  MarkHotkey({code: 73, type: 'italic'}),
-  MarkHotkey({code: 68, type: 'strikethrough'}),
-  MarkHotkey({code: 85, type: 'underline'}),
+  MarkHotkey({key: 'b', type: 'bold'}),
+  MarkHotkey({key: 'c', type: 'code', isAltKey: true}),
+  MarkHotkey({key: 'i', type: 'italic'}),
+  MarkHotkey({key: 'd', type: 'strikethrough'}),
+  MarkHotkey({key: 'u', type: 'underline'}),
 ];
 
 export default class extends React.Component {
