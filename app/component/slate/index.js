@@ -4,23 +4,6 @@ import firebase from '../../firebase';
 
 const database = firebase.database();
 
-/*
-const initialState = Raw.deserialize({
-  nodes: [
-    {
-      kind: 'block',
-      type: 'paragraph',
-      nodes: [
-        {
-          kind: 'text',
-          text: 'A line of text in a paragraph.'
-        }
-      ]
-    }
-  ]
-}, { terse: true })
-*/
-
 const initialState = Raw.deserialize({
   nodes: [
     {
@@ -44,6 +27,9 @@ export default class extends React.Component {
       nodes: {
         code: props => <pre {...props.attributes}><code>{props.children}</code></pre>,
       },
+      marks: {
+        bold: props => <strong>{props.children}</strong>
+      },
     }
   };
 
@@ -60,15 +46,19 @@ export default class extends React.Component {
   onKeyDown = (event,data,change) => {
     console.log(event.which + 'metaKey:' + event.metaKey + ' altKey:' + event.altKey);
 
-    if(event.which != 67 || !event.altKey) {
-      return;
-    }
+    if(!event.altKey) return;
 
     event.preventDefault();
-    const isCode = change.state.blocks.some(block => block.type == 'code');
 
-    change.setBlock(isCode ? 'paragraph' : 'code');
-    return true;
+    switch(event.which) {
+      case 66:
+        change.toggleMark('bold');
+        return true;
+      case 67:
+        const isCode = change.state.blocks.some(block => block.type == 'code');
+        change.setBlock(isCode ? 'paragraph' : 'code');
+        return true;
+    }
   }
 
   render() {
