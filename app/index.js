@@ -8,14 +8,16 @@ import store from './store';
 import indexComponent from './component';
 import Photo from './component/photo';
 import Slate from './component/slate';
+import Toolbar from './component/slate/Toolbar';
 
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path='/' component={indexComponent}>
-        <IndexRedirect to="/slate" />
+        <IndexRedirect to="/toolbar" />
         <Route path="/photo" component={Photo} />
         <Route path="/slate" component={Slate} />
+        <Route path="/toolbar" component={Toolbar} />
       </Route>
     </Router>
   </Provider>
