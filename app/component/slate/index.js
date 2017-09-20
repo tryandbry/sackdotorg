@@ -56,7 +56,15 @@ export default class extends React.Component {
     state: initialState,
     schema: {
       nodes: {
-        code: props => <pre {...props.attributes}><code>{props.children}</code></pre>,
+        //code: props => <pre {...props.attributes}><code>{props.children}</code></pre>,
+        'block-quote': props => <blockquote {...props.attributes}>{props.children}</blockquote>,
+        'bulleted-list': props => <ul {...props.attributes}>{props.children}</ul>,
+        'heading-one': props => <h1 {...props.attributes}>{props.children}</h1>,
+        'heading-two': props => <h2 {...props.attributes}>{props.children}</h2>,
+        'heading-three': props => <h3 {...props.attributes}>{props.children}</h3>,
+        'heading-four': props => <h4 {...props.attributes}>{props.children}</h4>,
+        'list-item': props => <li {...props.attributes}>{props.children}</li>,
+        'numbered-list': props => <ol {...props.attributes}>{props.children}</ol>,
       },
       marks: {
         bold: props => <strong>{props.children}</strong>,

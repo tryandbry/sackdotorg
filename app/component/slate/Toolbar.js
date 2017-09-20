@@ -8,6 +8,14 @@ export default (props) => {
 
   //const blockCode = event => props.onClickBlock(event,'code');
   const markCode = event => props.onClickMark(event,'code');
+  
+  const blockH1 = event => props.onClickBlock(event,'heading-one');
+  const blockH2 = event => props.onClickBlock(event,'heading-two');
+  const blockH3 = event => props.onClickBlock(event,'heading-three');
+  const blockH4 = event => props.onClickBlock(event,'heading-four');
+  const blockQuote = event => props.onClickBlock(event,'block-quote');
+  const blockListBullet = event => props.onClickBlock(event,'bulleted-list');
+  const blockListNumber = event => props.onClickBlock(event,'numbered-list');
 
   return (
     <div>
@@ -28,15 +36,15 @@ export default (props) => {
         <span className="fa fa-caret-down"></span>
         </button>
         <div className="dropdown-menu">
-          <span className="dropdown-item"><h1>AaBbCc</h1>Heading 1</span>
-          <span className="dropdown-item"><h2>AaBbCc</h2>Heading 2</span>
-          <span className="dropdown-item"><h3>AaBbCc</h3>Heading 3</span>
-          <span className="dropdown-item"><h4>AaBbCc</h4>Heading 4</span>
+          <span className="dropdown-item" onClick={blockH1}><h1>AaBbCc</h1>Heading 1</span>
+          <span className="dropdown-item" onClick={blockH2}><h2>AaBbCc</h2>Heading 2</span>
+          <span className="dropdown-item" onClick={blockH3}><h3>AaBbCc</h3>Heading 3</span>
+          <span className="dropdown-item" onClick={blockH4}><h4>AaBbCc</h4>Heading 4</span>
         </div>
       </div>
-      <span className="btn btn-default fa fa-quote-right"></span>
-      <span className="btn btn-default fa fa-list-ol"></span>
-      <span className="btn btn-default fa fa-list-ul"></span>
+      <span className="btn btn-default fa fa-quote-right" onClick={blockQuote}></span>
+      <span className="btn btn-default fa fa-list-ul" onClick={blockListBullet}></span>
+      <span className="btn btn-default fa fa-list-ol" onClick={blockListNumber}></span>
     </div>
   );
 }
