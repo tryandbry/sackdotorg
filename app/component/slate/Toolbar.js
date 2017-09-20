@@ -2,12 +2,16 @@ import React from 'react';
 
 export default (props) => {
   const markBold = event => props.onClickMark(event,'bold');
+  const markItalic = event => props.onClickMark(event,'italic');
+  const markUnderline = event => props.onClickMark(event,'underline');
+  const markStrikethrough = event => props.onClickMark(event,'strikethrough');
 
   return (
     <div>
       <span className="btn btn-default fa fa-bold" onClick={markBold}></span>
-      <span className="btn btn-default fa fa-italic"></span>
-      <span className="btn btn-default fa fa-underline"></span>
+      <span className="btn btn-default fa fa-italic" onClick={markItalic}></span>
+      <span className="btn btn-default fa fa-underline" onClick={markUnderline}></span>
+      <span className="btn btn-default fa fa-strikethrough" onClick={markStrikethrough}></span>
       <span className="btn btn-default fa fa-code"></span>
       <div className="dropdown c-inline">
         <button
