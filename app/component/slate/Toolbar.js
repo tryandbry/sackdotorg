@@ -1,10 +1,11 @@
 import React from 'react';
 
 export default (props) => {
+  const markBold = event => props.onClickMark(event,'bold');
 
   return (
     <div>
-      <span className="btn btn-default fa fa-bold"></span>
+      <span className="btn btn-default fa fa-bold" onClick={markBold}></span>
       <span className="btn btn-default fa fa-italic"></span>
       <span className="btn btn-default fa fa-underline"></span>
       <span className="btn btn-default fa fa-code"></span>

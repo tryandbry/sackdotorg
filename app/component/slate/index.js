@@ -3,6 +3,8 @@ import {Editor, Raw, Plain} from 'slate';
 import firebase from '../../firebase';
 import keycode from 'keycode';
 
+import Toolbar from './Toolbar';
+
 const database = firebase.database();
 
 const initialState = Raw.deserialize({
@@ -71,6 +73,12 @@ export default class extends React.Component {
     }
   }
 
+  onClickMark = (event,type) => {
+    event.preventDefault();
+    const newState = this.state.state.change().toggleMark(type);
+    this.onChange(newState);
+  }
+
   /*
   onKeyDown = (event,data,change) => {
     console.log(event.which + 'metaKey:' + event.metaKey + ' altKey:' + event.altKey);
@@ -95,6 +103,9 @@ export default class extends React.Component {
 
     return (
       <div>
+        <Toolbar
+          onClickMark={this.onClickMark}
+        />
         <Editor 
           plugins={plugins}
           state={this.state.state}
@@ -105,3 +116,39 @@ export default class extends React.Component {
     );
   }
 }
+
+
+/*
+const Toolbar = (props) => {
+
+  return (
+    <div>
+      <span className="btn btn-default fa fa-bold"></span>
+      <span className="btn btn-default fa fa-italic"></span>
+      <span className="btn btn-default fa fa-underline"></span>
+      <span className="btn btn-default fa fa-code"></span>
+      <div className="dropdown c-inline">
+        <button
+          className="btn btn-default dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+        >
+        <span className="fa fa-header"></span>
+        &nbsp;
+        <span className="fa fa-caret-down"></span>
+        </button>
+        <div className="dropdown-menu">
+          <span className="dropdown-item" href="#"><h1>AaBbCc</h1>Heading 1</span>
+          <span className="dropdown-item" href="#"><h2>AaBbCc</h2>Heading 2</span>
+          <span className="dropdown-item" href="#"><h3>AaBbCc</h3>Heading 3</span>
+          <span className="dropdown-item" href="#"><h4>AaBbCc</h4>Heading 4</span>
+        </div>
+      </div>
+      <span className="btn btn-default fa fa-quote-right"></span>
+      <span className="btn btn-default fa fa-list-ol"></span>
+      <span className="btn btn-default fa fa-list-ul"></span>
+    </div>
+  );
+}
+*/
