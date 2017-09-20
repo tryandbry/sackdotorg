@@ -19,6 +19,35 @@ const initialState = Raw.deserialize({
   ],
 }, {terse: true});
 
+function MarkHotkey({type, code, isAltKey = false}){
+  console.log('MarkHotkey:',type, code, isAltKey);
+  return {
+    onKeyDown(event,data,change) {
+      console.log('code: ',code, 'isAltKey: ',isAltKey);
+      console.log('key: ' + event.which + ' altKey:' + event.altKey);
+      if(event.which != code || event.altKey != isAltKey) {
+        console.log('no match');
+        return;
+      }
+      console.log('match');
+
+      event.preventDefault();
+
+      change.toggleMark(type);
+      return true;
+    }
+  }
+}
+
+const boldPlugin = MarkHotkey({
+  type: 'bold',
+  code: 66,
+  isAltKey: true,
+});
+
+const plugins = [
+  boldPlugin,
+];
 
 export default class extends React.Component {
   state = {
@@ -43,6 +72,7 @@ export default class extends React.Component {
     }
   }
 
+  /*
   onKeyDown = (event,data,change) => {
     console.log(event.which + 'metaKey:' + event.metaKey + ' altKey:' + event.altKey);
 
@@ -60,16 +90,17 @@ export default class extends React.Component {
         return true;
     }
   }
+  */
 
   render() {
 
     return (
       <div>
         <Editor 
+          plugins={plugins}
           state={this.state.state}
           schema={this.state.schema}
           onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
         />
       </div>
     );
