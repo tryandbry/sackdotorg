@@ -6,13 +6,15 @@ export default (props) => {
   const markUnderline = event => props.onClickMark(event,'underline');
   const markStrikethrough = event => props.onClickMark(event,'strikethrough');
 
+  const blockCode = event => props.onClickBlock(event,'code');
+
   return (
     <div>
       <span className="btn btn-default fa fa-bold" onClick={markBold}></span>
       <span className="btn btn-default fa fa-italic" onClick={markItalic}></span>
       <span className="btn btn-default fa fa-underline" onClick={markUnderline}></span>
       <span className="btn btn-default fa fa-strikethrough" onClick={markStrikethrough}></span>
-      <span className="btn btn-default fa fa-code"></span>
+      <span className="btn btn-default fa fa-code" onClick={blockCode}></span>
       <div className="dropdown c-inline">
         <button
           className="btn btn-default dropdown-toggle"
@@ -25,10 +27,10 @@ export default (props) => {
         <span className="fa fa-caret-down"></span>
         </button>
         <div className="dropdown-menu">
-          <span className="dropdown-item" href="#"><h1>AaBbCc</h1>Heading 1</span>
-          <span className="dropdown-item" href="#"><h2>AaBbCc</h2>Heading 2</span>
-          <span className="dropdown-item" href="#"><h3>AaBbCc</h3>Heading 3</span>
-          <span className="dropdown-item" href="#"><h4>AaBbCc</h4>Heading 4</span>
+          <span className="dropdown-item"><h1>AaBbCc</h1>Heading 1</span>
+          <span className="dropdown-item"><h2>AaBbCc</h2>Heading 2</span>
+          <span className="dropdown-item"><h3>AaBbCc</h3>Heading 3</span>
+          <span className="dropdown-item"><h4>AaBbCc</h4>Heading 4</span>
         </div>
       </div>
       <span className="btn btn-default fa fa-quote-right"></span>

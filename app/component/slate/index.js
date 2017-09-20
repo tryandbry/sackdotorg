@@ -22,6 +22,8 @@ const initialState = Raw.deserialize({
   ],
 }, {terse: true});
 
+// For key commands
+// ------------------------------
 function MarkHotkey({type, key, isAltKey = false, isCtrlKey = false}){
   return {
     onKeyDown(event,data,change) {
@@ -45,6 +47,9 @@ const plugins = [
   MarkHotkey({key: 'd', type: 'strikethrough'}),
   MarkHotkey({key: 'u', type: 'underline'}),
 ];
+// ------------------------------
+
+
 
 export default class extends React.Component {
   state = {
@@ -79,6 +84,68 @@ export default class extends React.Component {
     this.onChange(newState);
   }
 
+  // checks if a range already has a block type applied
+  hasBlock = (type) => {
+    return this.state.state.blocks.some(node => node.type == type);
+  }
+
+  onClickBlock = (event,type) => {
+    event.preventDefault();
+
+    const isList = this.hasBlock('list-item');
+    const change = this.state.state.change();
+
+    // handle non-list blocks
+    if(type != 'bulleted-list' &&
+       type != 'numbered-list') {
+      const isActive = this.hasBlock(type);
+
+      if(isList) {
+        change
+          .setBlock(isActive ? 'paragraph' : type)
+          .unwrapBlock('bulleted-list')
+          .unwrapBlock('numbered-list');
+      }
+      else {
+        change
+          .setBlock(isActive ? 'paragraph' : type);
+      }
+    }
+    // handle list blocks
+    else {
+      const isType = this.state.state.blocks.some( block => {
+        return Boolean(
+          document.getClosest(
+            block.key,
+            parent => parent.type == type
+          )
+        );
+      });
+
+      // if already the list type, then switch back to paragraph
+      if(isList && isType) {
+        change
+          .setBlock('paragraph')
+          .unwrapBlock('bulleted-list')
+          .unwrapBlock('numbered-list');
+      }
+      // if other list type, then switch to desired list type
+      else if(isList) {
+        change
+          .unwrapBlock(type == 'bulleted-list' ? 'numbered-list' : 'bulleted-list')
+          .wrapBlock(type);
+      }
+      // else, set to list type
+      else {
+        change
+          .setBlock('list-item')
+          .wrapBlock(type);
+      }
+    }
+
+    this.onChange(change);
+  }
+
   /*
   onKeyDown = (event,data,change) => {
     console.log(event.which + 'metaKey:' + event.metaKey + ' altKey:' + event.altKey);
@@ -105,7 +172,9 @@ export default class extends React.Component {
       <div>
         <Toolbar
           onClickMark={this.onClickMark}
+          onClickBlock={this.onClickBlock}
         />
+        <hr/>
         <Editor 
           plugins={plugins}
           state={this.state.state}
@@ -116,39 +185,3 @@ export default class extends React.Component {
     );
   }
 }
-
-
-/*
-const Toolbar = (props) => {
-
-  return (
-    <div>
-      <span className="btn btn-default fa fa-bold"></span>
-      <span className="btn btn-default fa fa-italic"></span>
-      <span className="btn btn-default fa fa-underline"></span>
-      <span className="btn btn-default fa fa-code"></span>
-      <div className="dropdown c-inline">
-        <button
-          className="btn btn-default dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-        >
-        <span className="fa fa-header"></span>
-        &nbsp;
-        <span className="fa fa-caret-down"></span>
-        </button>
-        <div className="dropdown-menu">
-          <span className="dropdown-item" href="#"><h1>AaBbCc</h1>Heading 1</span>
-          <span className="dropdown-item" href="#"><h2>AaBbCc</h2>Heading 2</span>
-          <span className="dropdown-item" href="#"><h3>AaBbCc</h3>Heading 3</span>
-          <span className="dropdown-item" href="#"><h4>AaBbCc</h4>Heading 4</span>
-        </div>
-      </div>
-      <span className="btn btn-default fa fa-quote-right"></span>
-      <span className="btn btn-default fa fa-list-ol"></span>
-      <span className="btn btn-default fa fa-list-ul"></span>
-    </div>
-  );
-}
-*/
