@@ -19,13 +19,11 @@ const initialState = Raw.deserialize({
   ],
 }, {terse: true});
 
-function MarkHotkey({type, code, isAltKey = false}){
-  console.log('MarkHotkey:',type, code, isAltKey);
+function MarkHotkey({type, code, isAltKey = false, isCtrlKey = false}){
+  console.log('MarkHotkey:',type, code, isCtrlKey, isAltKey);
   return {
     onKeyDown(event,data,change) {
-      console.log('code: ',code, 'isAltKey: ',isAltKey);
-      console.log('key: ' + event.which + ' altKey:' + event.altKey);
-      if(event.which != code || event.altKey != isAltKey) {
+      if(!event.ctrlKey || event.which != code || event.altKey != isAltKey) {
         console.log('no match');
         return;
       }
@@ -39,14 +37,12 @@ function MarkHotkey({type, code, isAltKey = false}){
   }
 }
 
-const boldPlugin = MarkHotkey({
-  type: 'bold',
-  code: 66,
-  isAltKey: true,
-});
-
 const plugins = [
-  boldPlugin,
+  MarkHotkey({code: 66, type: 'bold'}),
+  MarkHotkey({code: 67, type: 'code', isAltKey: true}),
+  MarkHotkey({code: 73, type: 'italic'}),
+  MarkHotkey({code: 68, type: 'strikethrough'}),
+  MarkHotkey({code: 85, type: 'underline'}),
 ];
 
 export default class extends React.Component {
@@ -57,7 +53,11 @@ export default class extends React.Component {
         code: props => <pre {...props.attributes}><code>{props.children}</code></pre>,
       },
       marks: {
-        bold: props => <strong>{props.children}</strong>
+        bold: props => <strong>{props.children}</strong>,
+        code: props => <code>{props.children}</code>,
+        italic: props => <em>{props.children}</em>,
+        strikethrough: props => <del>{props.children}</del>,
+        underline: props => <u>{props.children}</u>,
       },
     }
   };
