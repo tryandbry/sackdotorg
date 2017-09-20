@@ -6,7 +6,8 @@ export default (props) => {
   const markUnderline = event => props.onClickMark(event,'underline');
   const markStrikethrough = event => props.onClickMark(event,'strikethrough');
 
-  const blockCode = event => props.onClickBlock(event,'code');
+  //const blockCode = event => props.onClickBlock(event,'code');
+  const markCode = event => props.onClickMark(event,'code');
 
   return (
     <div>
@@ -14,7 +15,7 @@ export default (props) => {
       <span className="btn btn-default fa fa-italic" onClick={markItalic}></span>
       <span className="btn btn-default fa fa-underline" onClick={markUnderline}></span>
       <span className="btn btn-default fa fa-strikethrough" onClick={markStrikethrough}></span>
-      <span className="btn btn-default fa fa-code" onClick={blockCode}></span>
+      <span className="btn btn-default fa fa-code" onClick={markCode}></span>
       <div className="dropdown c-inline">
         <button
           className="btn btn-default dropdown-toggle"
